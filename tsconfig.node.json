@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "es2024",
+      "ESNext.Array",
+      "ESNext.Collection",
+      "ESNext.Iterator",
+      "ESNext.Promise"
+    ],
+    "module": "nodenext",
+    "skipLibCheck": true,
+
+    /* Modules */
+    "esModuleInterop": true,
+    "moduleResolution": "node16",
+
+    /* Linting */
+    "strict": true
+  },
+  "include": ["vite.config.ts", "scripts"]
+}
