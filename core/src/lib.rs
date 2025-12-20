@@ -1,11 +1,20 @@
-use serde_wasm_bindgen::to_value;
+use image::ImageFormat;
+use std::io::Cursor;
 use wasm_bindgen::prelude::*;
 
-pub mod engine;
+mod engine;
 
 #[wasm_bindgen]
-pub fn run_wasm_dilation(padding: u32) -> JsValue {
-    let result = engine::process_dummy_texture(padding);
+pub fn fix_texture(image_data: &[u8], padding: u32) -> Result<Vec<u8>, JsValue> {
+    let img = image::load_from_memory(image_data)
+        .map_err(|e| JsValue::from_str(&format!("Load Error: {}", e)))?;
 
-    to_value(&result).unwrap()
+    let fixed = engine::process_image(img, padding);
+
+    let mut buffer = Vec::new();
+    fixed
+        .write_to(&mut Cursor::new(&mut buffer), ImageFormat::Png)
+        .map_err(|e| JsValue::from_str(&format!("Save Error: {}", e)))?;
+
+    Ok(buffer)
 }
