@@ -15,7 +15,9 @@
     "moduleResolution": "node16",
 
     /* Linting */
-    "strict": true
+    "strict": true,
+
+    "noEmit": true
   },
   "include": ["vite.config.ts", "scripts"]
 }
