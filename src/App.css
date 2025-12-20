@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@custom-variant dark (&:is(.dark *));
+
 @theme inline {
   --font-sans: "Inter Variable", sans-serif;
 
@@ -37,7 +39,7 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
   --primary: oklch(0.85 0.12264 76.858);
-  --primary-foreground: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.145 0 0);
   --secondary: oklch(0.5 0.07 250);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.94 0 0);
@@ -58,7 +60,7 @@
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.85 0.12264 76.858);
-  --primary-foreground: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.145 0 0);
   --secondary: oklch(0.7 0.08 250);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.269 0 0);
