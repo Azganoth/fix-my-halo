@@ -1,91 +1,92 @@
 import "@/App.css";
-import init, { run_wasm_dilation } from "@/pkg/fix_my_halo";
+import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
+import { CliDocumentation } from "@/features/docs/CliDocumentation";
+import { ProcessExplanation } from "@/features/docs/ProcessExplanation";
+import { BatchProcessor } from "@/features/processor/BatchProcessor";
+import { useThemeStore } from "@/stores/useThemeStore";
+import { useWorkerStore } from "@/stores/useWorkerStore";
 // @ts-expect-error fontsource font
 import "@fontsource-variable/inter";
-import { useEffect, useState } from "react";
+import { Loader2Icon } from "lucide-react";
+import { motion, stagger, type Variants } from "motion/react";
+import { useEffect } from "react";
 
-interface ProcessingResult {
-  original_size: number;
-  new_size: number;
-  processed_pixels: number;
-  time_taken_ms: number;
-  message: string;
-}
+const containerVariants: Variants = {
+  visible: {
+    transition: {
+      delayChildren: stagger(0.2),
+    },
+  },
+};
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
 
 export function App() {
-  const [isReady, setIsReady] = useState(false);
-  const [processing, setProcessing] = useState(false);
-  const [result, setResult] = useState<ProcessingResult | null>(null);
+  const { theme } = useThemeStore();
 
   useEffect(() => {
-    init()
-      .then(() => setIsReady(true))
-      .catch((e) => console.error("Wasm failed to load:", e));
-  }, []);
+    const isDark =
+      theme === "system"
+        ? window.matchMedia("(prefers-color-scheme: dark)").matches
+        : theme === "dark";
 
-  const handleSimulateDrop = () => {
-    if (!isReady || processing) return;
-    setProcessing(true);
-    setResult(null);
+    window.document.documentElement.classList.toggle("dark", isDark);
+  }, [theme]);
 
-    setTimeout(() => {
-      try {
-        const rawResult = run_wasm_dilation(12);
-        setResult(rawResult as ProcessingResult);
-      } catch (e) {
-        console.error("Processing failed", e);
-      }
-      setProcessing(false);
-    }, 800);
-  };
+  const { isReady, init } = useWorkerStore();
+
+  useEffect(() => {
+    init();
+  }, [init]);
+
+  if (!isReady) {
+    return (
+      <div className="flex min-h-dvh w-full flex-col items-center justify-center">
+        <Loader2Icon className="size-16 animate-spin text-primary" />
+        <p className="mt-8 animate-pulse text-2xl font-bold text-primary">
+          Loading Engine...
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex min-h-dvh flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md space-y-6 text-center">
-        {/* Header */}
-        <header>
-          <h1 className="text-4xl font-bold text-foreground sm:text-5xl">
-            FixMyHalo
+    <div className="flex min-h-dvh w-full flex-col">
+      <Header />
+
+      <motion.main
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="container m-auto flex flex-1 flex-col items-center px-6 py-12 md:py-16"
+      >
+        <motion.div variants={itemVariants} className="text-center">
+          <h1 className="text-4xl font-extrabold lg:text-6xl">
+            Fix My <span className="text-primary">Halo</span>
           </h1>
-          <p className="mt-2 text-muted-foreground">
-            Texture Dilation Engine (Dummy Mode)
+          <p className="mt-6 max-w-xl text-lg text-muted-foreground">
+            Automatically eliminate white artifacts from your textures using
+            pixel dilation. Runs 100% locally in your browser.
           </p>
-        </header>
+        </motion.div>
 
-        {/* Drop Zone Simulation */}
-        <div
-          onClick={handleSimulateDrop}
-          className={`flex cursor-pointer flex-col items-center justify-center gap-4 rounded-lg border-2 border-dashed border-border p-10 transition-colors ${processing ? "border-primary bg-primary/10" : "hover:border-accent hover:bg-accent/20"} `}
-        >
-          {processing ? (
-            <div className="font-bold text-primary">Processing...</div>
-          ) : (
-            <>
-              <div className="text-4xl">😇</div>
-              <p className="text-sm text-muted-foreground">
-                Click to simulate processing
-              </p>
-            </>
-          )}
-        </div>
+        <motion.div variants={itemVariants} className="mt-12 w-full max-w-3xl">
+          <BatchProcessor />
+        </motion.div>
 
-        {/* Console Output */}
-        <div className="h-48 overflow-auto rounded-lg border border-border bg-card p-4 text-left font-mono text-xs shadow-inner">
-          <div className="mb-2 border-b border-border pb-1 text-muted-foreground">
-            System Log
-          </div>
+        <motion.div variants={itemVariants} className="mt-20">
+          <ProcessExplanation />
+        </motion.div>
 
-          <p className={isReady ? "text-green-500" : "text-red-500"}>
-            {isReady ? "✓ Engine Loaded. Ready." : "⚠ Engine Loading..."}
-          </p>
+        <motion.div variants={itemVariants} className="mt-20 w-full max-w-3xl">
+          <CliDocumentation />
+        </motion.div>
+      </motion.main>
 
-          {result && (
-            <pre className="mt-2 whitespace-pre-wrap text-foreground">
-              {JSON.stringify(result, null, 2)}
-            </pre>
-          )}
-        </div>
-      </div>
+      <Footer />
     </div>
   );
 }
