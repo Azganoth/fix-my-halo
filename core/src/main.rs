@@ -37,14 +37,21 @@ struct Cli {
     verbose: bool,
 }
 
+struct Job {
+    input_path: PathBuf,
+    output_path: PathBuf,
+}
+
 fn main() {
     let args = Cli::parse();
 
     /* Collect files */
-    let mut files = Vec::new();
     let path = Path::new(&args.input);
+    let mut files = Vec::new();
+    let base_path: PathBuf;
 
     if path.is_dir() {
+        base_path = path.to_path_buf();
         let max_depth = if args.recursive { usize::MAX } else { 1 };
         for entry in WalkDir::new(path)
             .max_depth(max_depth)
@@ -56,8 +63,10 @@ fn main() {
             }
         }
     } else if path.is_file() {
+        base_path = path.parent().unwrap_or(Path::new(".")).to_path_buf();
         files.push(path.to_path_buf());
     } else {
+        base_path = Path::new(".").to_path_buf();
         if let Ok(paths) = glob(&args.input) {
             for entry in paths.filter_map(|e| e.ok()) {
                 if entry.is_file() && is_image(&entry) {
@@ -72,10 +81,37 @@ fn main() {
         return;
     }
 
-    println!("Found {} files to process.", files.len());
+    /* Determine jobs (inputs and outputs) */
+    let jobs: Vec<Job> = files
+        .into_iter()
+        .map(|input| {
+            let output = if args.in_place {
+                input.clone()
+            } else {
+                let dest_root = if let Some(ref out) = args.output {
+                    out.clone()
+                } else {
+                    base_path.join("fixed")
+                };
 
-    /* Process */
-    let pb = ProgressBar::new(files.len() as u64);
+                // Preserve structure if possible
+                let relative = input
+                    .strip_prefix(&base_path)
+                    .unwrap_or_else(|_| Path::new(input.file_name().unwrap()));
+
+                dest_root.join(relative)
+            };
+
+            Job {
+                input_path: input,
+                output_path: output,
+            }
+        })
+        .collect();
+
+    println!("Found {} files to process.", jobs.len());
+
+    let pb = ProgressBar::new(jobs.len() as u64);
     pb.set_style(
         ProgressStyle::default_bar()
             .template(
@@ -85,10 +121,11 @@ fn main() {
             .progress_chars("#>-"),
     );
 
-    let results: Vec<Result<PathBuf, String>> = files
+    /* Process */
+    let results: Vec<Result<PathBuf, String>> = jobs
         .par_iter()
         .progress_with(pb)
-        .map(|file_path| process_file(file_path, &args))
+        .map(|job| process_job(job, &args))
         .collect();
 
     /* Report */
@@ -117,39 +154,24 @@ fn is_image(path: &Path) -> bool {
         .unwrap_or(false)
 }
 
-fn process_file(input_path: &Path, args: &Cli) -> Result<PathBuf, String> {
+fn process_job(job: &Job, args: &Cli) -> Result<PathBuf, String> {
     if args.verbose {
-        println!("Processing: {:?}", input_path);
+        println!("Processing: {:?}", job.input_path);
     }
 
-    let img =
-        image::open(input_path).map_err(|e| format!("Open error for {:?}: {}", input_path, e))?;
+    if let Some(parent) = job.output_path.parent() {
+        fs::create_dir_all(parent)
+            .map_err(|e| format!("Failed to create directory {:?}: {}", parent, e))?;
+    }
+
+    let img = image::open(&job.input_path)
+        .map_err(|e| format!("Open error for {:?}: {}", job.input_path, e))?;
 
     let processed = engine::process_image(img, args.padding);
 
-    // Determine output path
-    let output_path = if args.in_place {
-        input_path.to_path_buf()
-    } else if let Some(ref out_dir) = args.output {
-        fs::create_dir_all(out_dir)
-            .map_err(|e| format!("Failed to create output dir {:?}: {}", out_dir, e))?;
-
-        let filename = input_path.file_name().ok_or("Invalid filename")?;
-        out_dir.join(filename)
-    } else {
-        let parent = input_path.parent().unwrap_or_else(|| Path::new("."));
-        let fixed_dir = parent.join("fixed");
-
-        fs::create_dir_all(&fixed_dir)
-            .map_err(|e| format!("Failed to create default output dir {:?}: {}", fixed_dir, e))?;
-
-        let filename = input_path.file_name().ok_or("Invalid filename")?;
-        fixed_dir.join(filename)
-    };
-
     processed
-        .save(&output_path)
-        .map_err(|e| format!("Save error for {:?}: {}", output_path, e))?;
+        .save(&job.output_path)
+        .map_err(|e| format!("Save error for {:?}: {}", job.output_path, e))?;
 
-    Ok(output_path)
+    Ok(job.output_path.clone())
 }
