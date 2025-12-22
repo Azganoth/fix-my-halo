@@ -1,6 +1,12 @@
 import { Button } from "@/components/ui/Button";
 import { CheckIcon, CopyIcon } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
+
+const iconVariants = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: { opacity: 1, scale: 1 },
+};
 
 interface CodeSnippetProps {
   code: string;
@@ -28,11 +34,31 @@ export function CodeSnippet({ code, language = "bash" }: CodeSnippetProps) {
           className="size-6"
           onClick={handleCopy}
         >
-          {copied ? (
-            <CheckIcon className="size-4 text-green-500" />
-          ) : (
-            <CopyIcon className="size-4" />
-          )}
+          <AnimatePresence mode="wait" initial={false}>
+            {copied ? (
+              <motion.div
+                key="check"
+                variants={iconVariants}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                transition={{ duration: 0.15 }}
+              >
+                <CheckIcon className="size-4 text-green-500" />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="copy"
+                variants={iconVariants}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                transition={{ duration: 0.15 }}
+              >
+                <CopyIcon className="size-4" />
+              </motion.div>
+            )}
+          </AnimatePresence>
           <span className="sr-only">Copy code</span>
         </Button>
       </div>

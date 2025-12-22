@@ -1,6 +1,7 @@
 import { CodeSnippet } from "@/components/ui/CodeSnippet";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
+import { Slider } from "@/components/ui/Slider";
 import { Switch } from "@/components/ui/Switch";
 import { DEFAULT_PADDING } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -106,16 +107,18 @@ export function CliCommandBuilder() {
         <div className="space-y-8">
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <Label className="text-muted-foreground">Dilation Padding</Label>
+              <Label htmlFor="cli-dilation" className="text-muted-foreground">
+                Dilation Padding
+              </Label>
               <span className="font-mono text-xs font-bold">{padding}px</span>
             </div>
-            <input
-              type="range"
+            <Slider
+              id="cli-dilation"
               min={1}
               max={64}
-              value={padding}
-              onChange={(e) => setPadding(Number(e.target.value))}
-              className="h-2 w-full cursor-pointer appearance-none rounded-full bg-muted accent-primary"
+              step={1}
+              value={[padding]}
+              onValueChange={(values) => setPadding(values[0])}
             />
           </div>
 
