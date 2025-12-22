@@ -47,25 +47,32 @@ No installation required. Runs entirely in your browser using **WebAssembly
 
 ### 💻 CLI Tool
 
-Ideal for modders batch-processing hundreds of textures at once.
+Ideal for modders batch-processing hundreds of textures at once. Supports parallel processing, recursion, and multiple file formats.
 
 **Installation:**
 
-1. Download `fixmyhalo.exe` from the
+1. Download `fixmyhalo.exe` (Windows x64) from the
    [**Releases Page**](https://github.com/Azganoth/fix-my-halo/releases).
 2. Place it in your folder (or add to PATH).
+3. Open a terminal where it is located and execute it with the desired parameters.
 
-**Commands:**
+**Usage:**
 
 ```powershell
-# Fix a single file (default padding: 8px)
-.\fixmyhalo.exe -p "Textures/Player.png"
+# Basic usage (Saves to "fixed/" folder next to input)
+./fixmyhalo "Textures/Player.png"
 
-# Fix an entire folder of textures
-.\fixmyhalo.exe -p "C:/RimworldMod/Textures"
+# Batch process an entire folder recursively
+./fixmyhalo "C:/MyMod/Textures" --recursive
 
-# Customize padding (smear distance)
-.\fixmyhalo.exe -p "Textures/" --padding 16
+# Overwrite original files (In-place)
+./fixmyhalo "C:/MyMod/Textures" --recursive --in-place
+
+# Use Glob patterns (e.g. process only PNGs)
+./fixmyhalo "assets/**/*.png" --padding 16
+
+# Specify a custom output directory
+./fixmyhalo "input/" --output "C:/Output/FixedTextures"
 ```
 
 ## 📜 License
