@@ -1,3 +1,4 @@
+import { DEFAULT_PADDING } from "@/lib/constants";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -9,7 +10,7 @@ interface SettingsStore {
 export const useSettingsStore = create<SettingsStore>()(
   persist(
     (set) => ({
-      defaultPadding: 16,
+      defaultPadding: DEFAULT_PADDING,
       setDefaultPadding: (defaultPadding) => set({ defaultPadding }),
     }),
     {

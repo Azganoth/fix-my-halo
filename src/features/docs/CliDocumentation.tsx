@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/Button";
-import { CodeSnippet } from "@/components/ui/CodeSnippet";
 import { DownloadIcon, TerminalIcon } from "lucide-react";
+import { CliCommandBuilder } from "./components/CliCommandBuilder";
 
 export function CliDocumentation() {
   return (
@@ -15,8 +15,9 @@ export function CliDocumentation() {
         </p>
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-2">
-        {/* Installation */}
+      <div className="flex flex-col gap-8">
+        <CliCommandBuilder />
+
         <div className="space-y-4">
           <h3 className="flex items-center gap-2 text-lg font-semibold">
             <DownloadIcon className="size-4" />
@@ -36,26 +37,6 @@ export function CliDocumentation() {
                 Go to GitHub Releases
               </a>
             </Button>
-          </div>
-        </div>
-
-        {/* Usage */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold">Usage Examples</h3>
-          <div className="grid gap-4">
-            <div className="space-y-3">
-              <h4 className="font-mono text-xs text-muted-foreground uppercase">
-                Single File
-              </h4>
-              <CodeSnippet code="fix-my-halo.exe input.png" />
-            </div>
-
-            <div className="space-y-3">
-              <h4 className="font-mono text-xs text-muted-foreground uppercase">
-                With Custom Padding
-              </h4>
-              <CodeSnippet code="fix-my-halo.exe input.png --padding 16" />
-            </div>
           </div>
         </div>
       </div>
