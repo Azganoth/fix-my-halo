@@ -8,6 +8,8 @@ import { useThemeStore } from "@/stores/useThemeStore";
 import { useWorkerStore } from "@/stores/useWorkerStore";
 // @ts-expect-error fontsource font
 import "@fontsource-variable/inter";
+// @ts-expect-error fontsource font
+import "@fontsource-variable/jetbrains-mono";
 import { Loader2Icon } from "lucide-react";
 import { motion, stagger, type Variants } from "motion/react";
 import { useEffect } from "react";

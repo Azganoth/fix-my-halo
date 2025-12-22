@@ -5,6 +5,7 @@
 
 @theme inline {
   --font-sans: "Inter Variable", sans-serif;
+  --font-mono: "JetBrains Mono Variable", sans-serif;
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
