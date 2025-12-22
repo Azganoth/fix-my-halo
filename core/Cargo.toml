@@ -20,6 +20,10 @@ cli = ["clap"]
 image = { version = "0.25", default-features = false, features = [
   "png",
   "jpeg",
+  "tga",
+  "bmp",
+  "tiff",
+  "dds",
 ] }
 wasm-bindgen = "0.2"
 serde = { version = "1.0", features = ["derive"] }

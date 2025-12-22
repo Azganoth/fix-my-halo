@@ -3,6 +3,7 @@ import { Label } from "@/components/ui/Label";
 import { ScrollArea } from "@/components/ui/ScrollArea";
 import { Slider } from "@/components/ui/Slider";
 import { FileRow } from "@/features/processor/components/FileRow";
+import { SUPPORTED_FILE_TYPES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { useSettingsStore } from "@/stores/useSettingsStore";
 import {
@@ -13,7 +14,6 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import { SUPPORTED_FILE_TYPES } from "./constants";
 import { useBatchProcessor } from "./hooks/useBatchProcessor";
 
 export function BatchProcessor() {
@@ -108,8 +108,8 @@ export function BatchProcessor() {
             <div>
               <h3 className="text-xl font-bold">Drop textures here</h3>
               <p className="mt-2 max-w-xs text-sm text-muted-foreground">
-                Support for PNG and JPG. Drag & drop multiple files or click to
-                browse.
+                Support for PNG, JPG, TGA, BMP, TIFF and DDS. Drag & drop
+                multiple files or click to browse.
               </p>
             </div>
             <Button variant="outline">Select Files</Button>

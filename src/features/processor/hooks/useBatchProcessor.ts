@@ -1,9 +1,8 @@
+import { SUPPORTED_FILE_TYPES } from "@/lib/constants";
 import { useWorkerStore } from "@/stores/useWorkerStore";
 import JSZip from "jszip";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { download } from "../utils";
-
-const SUPPORTED_FILE_TYPES = ["image/png", "image/jpeg", "image/webp"];
 
 export type FileStatus = "pending" | "processing" | "done" | "error";
 

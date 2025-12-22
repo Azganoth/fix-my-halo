@@ -150,7 +150,12 @@ fn is_image(path: &Path) -> bool {
     path.extension()
         .and_then(|s| s.to_str())
         .map(|s| s.to_lowercase())
-        .map(|s| matches!(s.as_str(), "png" | "jpg" | "jpeg"))
+        .map(|s| {
+            matches!(
+                s.as_str(),
+                "png" | "jpg" | "jpeg" | "tga" | "bmp" | "tif" | "tiff" | "dds",
+            )
+        })
         .unwrap_or(false)
 }
 
