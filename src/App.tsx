@@ -11,19 +11,19 @@ import "@fontsource-variable/inter";
 // @ts-expect-error fontsource font
 import "@fontsource-variable/jetbrains-mono";
 import { Loader2Icon } from "lucide-react";
-import { motion, stagger, type Variants } from "motion/react";
+import { motion, type MotionProps, type Variants } from "motion/react";
 import { useEffect } from "react";
 
-const containerVariants: Variants = {
-  visible: {
-    transition: {
-      delayChildren: stagger(0.2),
-    },
-  },
-};
-const itemVariants: Variants = {
+const fadeUpVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
+
+const revealAnimation: MotionProps = {
+  variants: fadeUpVariants,
+  initial: "hidden",
+  whileInView: "visible",
+  viewport: { once: true, margin: "-100px" },
 };
 
 export function App() {
@@ -59,13 +59,8 @@ export function App() {
     <div className="flex min-h-dvh w-full flex-col">
       <Header />
 
-      <motion.main
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="container m-auto flex flex-1 flex-col items-center px-6 py-12 md:py-16"
-      >
-        <motion.div variants={itemVariants} className="text-center">
+      <main className="container m-auto flex flex-1 flex-col items-center px-6 py-12 md:py-16">
+        <motion.div {...revealAnimation} className="text-center">
           <h1 className="text-4xl font-extrabold lg:text-6xl">
             Fix My <span className="text-primary">Halo</span>
           </h1>
@@ -75,18 +70,18 @@ export function App() {
           </p>
         </motion.div>
 
-        <motion.div variants={itemVariants} className="mt-12 w-full max-w-3xl">
+        <motion.div {...revealAnimation} className="mt-12 w-full max-w-3xl">
           <BatchProcessor />
         </motion.div>
 
-        <motion.div variants={itemVariants} className="mt-20">
+        <motion.div {...revealAnimation} className="mt-20">
           <ProcessExplanation />
         </motion.div>
 
-        <motion.div variants={itemVariants} className="mt-20 w-full max-w-3xl">
+        <motion.div {...revealAnimation} className="mt-20 w-full max-w-3xl">
           <CliDocumentation />
         </motion.div>
-      </motion.main>
+      </main>
 
       <Footer />
     </div>
