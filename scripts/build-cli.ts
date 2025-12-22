@@ -12,6 +12,7 @@ const CARGO_TOML = path.join(CORE_DIR, "Cargo.toml");
 const SOURCE_BIN = path.join(
   CORE_DIR,
   "target",
+  "x86_64-pc-windows-msvc",
   "release",
   `${BINARY_NAME}.exe`,
 );
@@ -22,7 +23,7 @@ console.log(chalk.cyan("Starting CLI app build..."));
 try {
   await fs.mkdir(DIST_DIR, { recursive: true });
 
-  console.log(chalk.yellow("\n--- Compiling Release Binary ---"));
+  console.log("\nCompiling Release Binary:");
 
   await runCommand(
     `cargo build --manifest-path ${CARGO_TOML} --release --features cli --target x86_64-pc-windows-msvc`,
@@ -30,8 +31,9 @@ try {
 
   if (await fsExists(SOURCE_BIN)) {
     await fs.copyFile(SOURCE_BIN, DEST_BIN);
-    console.log(chalk.green(`\n✔ Success! CLI available at:`));
-    console.log(chalk.bold(DEST_BIN));
+    console.log(
+      chalk.green(`\nSuccess! CLI available at: ${chalk.bold(DEST_BIN)}`),
+    );
   } else {
     throw new Error(`Artifact not found at ${SOURCE_BIN}`);
   }

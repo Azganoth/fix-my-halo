@@ -5,6 +5,7 @@ authors = ["Azganoth"]
 edition = "2024"
 
 [lib]
+name = "fix_my_halo_core"
 crate-type = ["cdylib", "rlib"]
 
 [[bin]]
