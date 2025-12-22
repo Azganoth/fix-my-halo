@@ -1,4 +1,4 @@
-import init, { fix_texture } from "@/pkg/fix_my_halo";
+import init, { fix_texture } from "@/pkg/fix_my_halo_core";
 import type { WorkerData, WorkerMessage } from "./types";
 
 init()
