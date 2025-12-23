@@ -138,7 +138,7 @@ export function BatchProcessor() {
 
             {/* Scrollable List */}
             <ScrollArea className="m-2 flex max-h-120 flex-col">
-              <div className="space-y-2 p-4">
+              <div className="flex flex-col gap-2 p-4">
                 <AnimatePresence initial={false} mode="popLayout">
                   {fileQueue.map((item) => (
                     <FileRow

@@ -6,7 +6,6 @@ import {
 } from "@/components/ui/HoverCard";
 import type { FileItem } from "@/features/processor/hooks/useBatchProcessor";
 import { useFilePreview } from "@/features/processor/hooks/useFilePreview";
-import { formatBytes } from "@/features/processor/utils";
 import {
   CheckCircle2Icon,
   DownloadIcon,
@@ -32,7 +31,7 @@ export function FileRow({ item, onRemove, onDownload }: FileRowProps) {
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
       transition={{ duration: 0.2 }}
-      className="group relative flex items-center gap-4 rounded-lg border bg-card p-3"
+      className="group relative grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-lg border bg-card p-3"
     >
       {/* Thumbnail */}
       <div className="relative size-12 shrink-0 overflow-hidden rounded-md border bg-muted/50">
@@ -63,12 +62,11 @@ export function FileRow({ item, onRemove, onDownload }: FileRowProps) {
       </div>
 
       {/* Info */}
-      <div className="flex min-w-0 flex-1 flex-col gap-1">
+      <div className="flex min-w-0 flex-col gap-1">
         <span className="truncate font-medium text-foreground">
           {item.file.name}
         </span>
         <div className="flex items-center gap-3 text-xs text-muted-foreground">
-          <span>{formatBytes(item.file.size)}</span>
           <AnimatePresence mode="wait">
             {item.status === "processing" && (
               <motion.span
@@ -109,28 +107,30 @@ export function FileRow({ item, onRemove, onDownload }: FileRowProps) {
       </div>
 
       {/* Actions */}
-      {item.status !== "processing" && (
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-muted-foreground opacity-0 group-hover:opacity-100 hover:text-destructive focus:opacity-100"
-          onClick={() => onRemove(item.id)}
-        >
-          <TrashIcon className="size-4" />
-          <span className="sr-only">Remove</span>
-        </Button>
-      )}
-      {item.status === "done" && (
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-muted-foreground hover:text-foreground"
-          onClick={() => onDownload(item.id)}
-        >
-          <DownloadIcon className="size-4" />
-          <span className="sr-only">Download</span>
-        </Button>
-      )}
+      <div className="flex gap-2">
+        {item.status !== "processing" && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-muted-foreground opacity-0 group-hover:opacity-100 hover:text-destructive focus:opacity-100"
+            onClick={() => onRemove(item.id)}
+          >
+            <TrashIcon className="size-5" />
+            <span className="sr-only">Remove</span>
+          </Button>
+        )}
+        {item.status === "done" && (
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-muted-foreground hover:text-foreground"
+            onClick={() => onDownload(item.id)}
+          >
+            <DownloadIcon className="size-5" />
+            <span className="sr-only">Download</span>
+          </Button>
+        )}
+      </div>
     </motion.div>
   );
 }
