@@ -22,12 +22,9 @@ export function useBatchProcessor({ padding }: UseBatchProcessorProps) {
   const [isProcessing, setIsProcessing] = useState(false);
   const [isZipping, setIsZipping] = useState(false);
 
-  // Store processed data in a Ref instead of State to avoid expensive re-renders
-  // when handling large binary blobs. UI only needs to know status (done/error).
   const processedBlobs = useRef<Map<string, Uint8Array>>(new Map());
 
-  // Automatically picks up the next 'pending' file when the worker is idle.
-  // This ensures sequential processing to avoid saturating the worker queue.
+  // Auto picks up next pending file
   useEffect(() => {
     if (isProcessing) return;
 
@@ -71,8 +68,7 @@ export function useBatchProcessor({ padding }: UseBatchProcessorProps) {
     processItem();
   }, [padding, processImage, fileQueue, isProcessing]);
 
-  // If the user changes padding, invalidate all completed files so they are
-  // re-queued for processing with the new settings.
+  // Reset all files states to pending when settings are changed
   useEffect(() => {
     setFileQueue((prev) => {
       const needsReprocess = prev.some(

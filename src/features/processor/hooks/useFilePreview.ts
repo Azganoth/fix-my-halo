@@ -5,6 +5,7 @@ export function useFilePreview(file: File) {
 
   useEffect(() => {
     if (!file) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPreview(null);
       return;
     }

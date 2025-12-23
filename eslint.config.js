@@ -15,42 +15,35 @@ const gitignorePath = fileURLToPath(new URL("./.gitignore", import.meta.url));
 export default defineConfig(
   includeIgnoreFile(gitignorePath),
   js.configs.recommended,
-  ...ts.configs.recommended,
-  prettier,
+  ts.configs.recommended,
+  pluginReact.configs.flat.recommended,
+  pluginReact.configs.flat["jsx-runtime"],
+  pluginReactHooks.configs.flat.recommended,
   {
     languageOptions: {
-      globals: { ...globals.browser, ...globals.node },
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+      },
     },
-    rules: {
-      "no-undef": "off",
+    settings: {
+      react: {
+        version: "detect",
+      },
     },
   },
   {
     languageOptions: {
-      ...pluginReact.configs.flat.recommended.languageOptions,
       globals: {
         ...globals.serviceworker,
       },
     },
   },
   {
-    ...pluginReact.configs.flat.recommended,
     plugins: {
-      ...pluginReact.configs.flat.recommended.plugins,
-      "react-hooks": pluginReactHooks,
-    },
-    settings: { react: { version: "detect" } },
-    rules: {
-      ...pluginReact.configs.flat.recommended.rules,
-      ...pluginReactHooks.configs.recommended.rules,
-      // React scope no longer necessary with new JSX transform.
-      "react/react-in-jsx-scope": "off",
-    },
-  },
-  {
-    plugins: {
-      // @ts-expect-error Known untyped plugin.
+      // @ts-expect-error 'eslint-plugin-only-warn' does not provide type definitions
       onlyWarn,
     },
   },
+  prettier,
 );
