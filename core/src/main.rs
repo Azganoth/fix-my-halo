@@ -174,8 +174,18 @@ fn process_job(job: &Job, args: &Cli) -> Result<PathBuf, String> {
 
     let processed = engine::process_image(img, args.padding);
 
+    let file = fs::File::create(&job.output_path)
+        .map_err(|e| format!("Failed to create file {:?}: {}", job.output_path, e))?;
+    let writer = std::io::BufWriter::new(file);
+
+    let encoder = image::codecs::png::PngEncoder::new_with_quality(
+        writer,
+        image::codecs::png::CompressionType::Best,
+        image::codecs::png::FilterType::Adaptive,
+    );
+
     processed
-        .save(&job.output_path)
+        .write_with_encoder(encoder)
         .map_err(|e| format!("Save error for {:?}: {}", job.output_path, e))?;
 
     Ok(job.output_path.clone())
