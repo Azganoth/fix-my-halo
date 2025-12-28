@@ -7,6 +7,8 @@ Eliminate the ugly "White Halo" artifacts from your Unity textures.
 [![Website](https://img.shields.io/badge/Use-Website-0077b9?style=for-the-badge&labelColor=1F1F1F&logo=vercel&logoColor=white)](https://fixmyhalo.vercel.app/)
 [![Request Icon](https://img.shields.io/badge/Download-CLI-0077b9?style=for-the-badge&labelColor=1F1F1F&logo=github&logoColor=white)](https://github.com/Azganoth/fix-my-halo/releases)
 
+![The problem and the solution showcased here](public/showcase.png)
+
 </div>
 
 ## 🧐 The Problem
