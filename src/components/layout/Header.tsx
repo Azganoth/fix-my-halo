@@ -1,25 +1,41 @@
 import { Button } from "@/components/ui/Button";
 import { ThemeToggle } from "@/features/theme/ThemeToggle";
-import { TerminalIcon } from "lucide-react";
+import { InfoIcon, PlayIcon, TerminalIcon } from "lucide-react";
 
 export function Header() {
-  const scrollToCli = () => {
-    const el = document.getElementById("cli-docs");
-    el?.scrollIntoView({ behavior: "smooth" });
+  const scrollTo = (target: string) => {
+    document.getElementById(target)?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
       <div className="container mx-auto flex h-14 items-center justify-between px-4">
         <span className="text-2xl">😇</span>
-        {/* <img className="size-8" src="favicon.svg" alt="Logo" /> */}
 
         <div className="flex items-center gap-2">
           <Button
             className="hidden cursor-pointer gap-2 md:flex"
             variant="ghost"
             size="sm"
-            onClick={scrollToCli}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          >
+            <PlayIcon className="size-4" />
+            App
+          </Button>
+          <Button
+            className="hidden cursor-pointer gap-2 md:flex"
+            variant="ghost"
+            size="sm"
+            onClick={() => scrollTo("how-it-works")}
+          >
+            <InfoIcon className="size-4" />
+            How it works
+          </Button>
+          <Button
+            className="hidden cursor-pointer gap-2 md:flex"
+            variant="ghost"
+            size="sm"
+            onClick={() => scrollTo("cli-docs")}
           >
             <TerminalIcon className="size-4" />
             CLI Docs

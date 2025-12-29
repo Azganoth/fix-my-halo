@@ -2,7 +2,7 @@ import { InfoIcon } from "lucide-react";
 
 export function ProcessExplanation() {
   return (
-    <section className="w-full max-w-3xl space-y-8">
+    <section id="how-it-works" className="w-full max-w-3xl space-y-8">
       <div className="flex items-center justify-center gap-2 md:justify-start">
         <InfoIcon className="size-6 text-primary" />
         <h2 className="text-2xl font-bold">How it works</h2>

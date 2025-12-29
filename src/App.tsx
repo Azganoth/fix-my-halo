@@ -60,7 +60,10 @@ export function App() {
       <Header />
 
       <main className="container m-auto flex flex-1 flex-col items-center gap-20 px-6 py-12 md:py-16">
-        <div className="flex min-h-[calc(100dvh-8.5rem)] w-full max-w-3xl flex-col items-center gap-12">
+        <section
+          id="app"
+          className="flex min-h-[calc(100dvh-8.5rem)] w-full max-w-3xl flex-col items-center gap-12"
+        >
           <motion.div {...revealAnimation} className="text-center">
             <h1 className="text-4xl font-extrabold lg:text-6xl">
               Fix My <span className="text-primary">Halo</span>
@@ -74,7 +77,7 @@ export function App() {
           <motion.div {...revealAnimation} className="my-auto w-full">
             <BatchProcessor />
           </motion.div>
-        </div>
+        </section>
 
         <motion.div {...revealAnimation}>
           <ProcessExplanation />
