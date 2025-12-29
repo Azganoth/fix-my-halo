@@ -4,7 +4,7 @@ import { CliCommandBuilder } from "./components/CliCommandBuilder";
 
 export function CliDocumentation() {
   return (
-    <section id="cli-docs" className="w-full scroll-mt-24 space-y-8">
+    <section id="cli-docs" className="w-full scroll-mt-20 space-y-8">
       <div className="space-y-2 text-center md:text-left">
         <div className="flex items-center justify-center gap-2 md:justify-start">
           <TerminalIcon className="size-6 text-primary" />
