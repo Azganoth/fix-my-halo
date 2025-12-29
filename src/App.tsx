@@ -59,26 +59,28 @@ export function App() {
     <div className="flex min-h-dvh w-full flex-col">
       <Header />
 
-      <main className="container m-auto flex flex-1 flex-col items-center px-6 py-12 md:py-16">
-        <motion.div {...revealAnimation} className="text-center">
-          <h1 className="text-4xl font-extrabold lg:text-6xl">
-            Fix My <span className="text-primary">Halo</span>
-          </h1>
-          <p className="mt-6 max-w-xl text-lg text-muted-foreground">
-            Automatically eliminate white artifacts from your textures using
-            pixel dilation. Runs 100% locally in your browser.
-          </p>
-        </motion.div>
+      <main className="container m-auto flex flex-1 flex-col items-center gap-20 px-6 py-12 md:py-16">
+        <div className="flex min-h-[calc(100dvh-8.5rem)] w-full max-w-3xl flex-col items-center gap-12">
+          <motion.div {...revealAnimation} className="text-center">
+            <h1 className="text-4xl font-extrabold lg:text-6xl">
+              Fix My <span className="text-primary">Halo</span>
+            </h1>
+            <p className="mt-6 max-w-xl text-lg text-muted-foreground">
+              Automatically eliminate white artifacts from your textures using
+              pixel dilation. Runs 100% locally in your browser.
+            </p>
+          </motion.div>
 
-        <motion.div {...revealAnimation} className="mt-12 w-full max-w-3xl">
-          <BatchProcessor />
-        </motion.div>
+          <motion.div {...revealAnimation} className="my-auto w-full">
+            <BatchProcessor />
+          </motion.div>
+        </div>
 
-        <motion.div {...revealAnimation} className="mt-20">
+        <motion.div {...revealAnimation}>
           <ProcessExplanation />
         </motion.div>
 
-        <motion.div {...revealAnimation} className="mt-20 w-full max-w-3xl">
+        <motion.div {...revealAnimation} className="w-full max-w-3xl">
           <CliDocumentation />
         </motion.div>
       </main>

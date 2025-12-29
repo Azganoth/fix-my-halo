@@ -71,7 +71,7 @@ export function BatchProcessor() {
     <div className="flex h-full flex-col gap-6">
       <div
         className={cn(
-          "relative flex flex-col overflow-hidden rounded-xl border bg-card shadow-sm transition-colors",
+          "relative flex h-144 flex-col overflow-hidden rounded-xl border bg-card shadow-sm transition-colors",
           isDragging && "border-primary",
         )}
         onDragOver={handleDragOver}
@@ -118,7 +118,7 @@ export function BatchProcessor() {
 
         {/* Active List State */}
         {hasItems && (
-          <div className="flex flex-col">
+          <div className="flex min-h-0 flex-1 flex-col">
             {/* List Header / Toolbar */}
             <div className="flex items-center justify-between border-b bg-muted/40 px-4 py-3 backdrop-blur">
               <div className="text-sm font-medium text-muted-foreground">
@@ -137,7 +137,7 @@ export function BatchProcessor() {
             </div>
 
             {/* Scrollable List */}
-            <ScrollArea className="m-2 flex max-h-120 flex-col">
+            <ScrollArea className="m-2 flex min-h-0 flex-1 flex-col">
               <div className="flex flex-col gap-2 p-4">
                 <AnimatePresence initial={false} mode="popLayout">
                   {fileQueue.map((item) => (
