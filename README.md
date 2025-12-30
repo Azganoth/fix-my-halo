@@ -13,35 +13,19 @@ Eliminate the ugly "White Halo" artifacts from your Unity textures.
 
 ## 🧐 The Problem
 
-When you export textures from Adobe Illustrator or Photoshop for Unity,
-transparent pixels are often saved as "Transparent White" (R=255, G=255, B=255,
-A=0).
-
-When the game renders these textures using **Bilinear Filtering**, it blends the
-visible edge colors with that hidden white background. The result? **A ghostly
-white outline** around your beautiful art.
+In game engines some texture filtering tecniques cause the textures to create a white/black halo around themselves. This happens because the GPU samples the pixels at the edge with their transparent neighbors to create a smooth transition, when the neighbor pixels are saved as **transparent white** (255, 255, 255, 0) or **transparent black** (0, 0, 0, 0) it creates a strong contrast and results in rendering a faint outline around your sprite.
 
 ## 🛠 The Solution
 
-**FixMyHalo** is a high-performance tool written in **Rust** that performs
-**Texture Dilation** (Alpha Bleeding).
+**FixMyHalo** is a high-performance tool written in **Rust** that performs **Texture Dilation** (Alpha Bleeding).
 
-It scans your image for transparent pixels and "bleeds" the nearest visible
-color into them.
-
-1. **Neutralizes Background:** Forces all transparent pixels to "Transparent
-   Black" (0,0,0,0).
-2. **Dilates Edges:** Smears the edge colors outwards into the invisible space.
-
-The result is a texture that looks identical in your editor but renders
-perfectly smooth in-game without the halo.
+This tool spreads the color of the edge pixels into the adjacent transparent areas while preserving their transparency. When the GPU samples the edge, it now finds the &quot;bled&quot; color instead of white, resulting in a perfect, clean transition.
 
 ## 🚀 Usage
 
 ### 🌐 Web Version
 
-No installation required. Runs entirely in your browser using **WebAssembly
-(Wasm)** for native performance.
+No installation required. Runs entirely in your browser using **WebAssembly (Wasm)** for native performance.
 
 1. Go to [**Fix My Halo**](https://fixmyhalo.vercel.app/).
 2. Drag & drop your PNGs.

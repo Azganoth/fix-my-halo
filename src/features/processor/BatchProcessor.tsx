@@ -64,7 +64,6 @@ export function BatchProcessor() {
   const pendingCount = fileQueue.filter(
     (f) => f.status === "pending" || f.status === "processing",
   ).length;
-  const doneCount = fileQueue.filter((f) => f.status === "done").length;
   const hasItems = fileQueue.length > 0;
 
   return (
@@ -214,16 +213,14 @@ export function BatchProcessor() {
             size="lg"
             className="w-full min-w-60 space-x-1 shadow-md sm:w-auto"
             onClick={downloadZip}
-            disabled={doneCount === 0 || pendingCount > 0 || isZipping}
+            disabled={pendingCount > 0 || isZipping}
           >
             {isZipping ? (
               <Loader2Icon className="size-5 animate-spin" />
             ) : (
               <DownloadIcon className="size-5" />
             )}
-            <span>
-              {doneCount > 0 ? `Download ${doneCount} Files` : "Download ZIP"}
-            </span>
+            <span>Save ZIP</span>
           </Button>
         </div>
       </motion.div>

@@ -18,30 +18,27 @@ export function ProcessExplanation() {
       />
       <div className="grid gap-6 md:grid-cols-2 [&_h3]:font-semibold [&_p]:text-sm [&_p]:leading-relaxed [&_p]:text-muted-foreground">
         <div className="space-y-3">
-          <h3>The Problem: White Halos</h3>
+          <h3>The Problem</h3>
           <p>
-            Game engines use <strong>bilinear filtering</strong> to smooth
-            textures. When a pixel is on the edge of transparency, the GPU
-            samples its color and blends it with its neighbors. If the
-            neighboring transparent pixels are &quot;White&quot; (255, 255, 255,
-            0), you get a faint white outline or{" "}
-            <strong>&quot;halo&quot;</strong> around your sprite.
-          </p>
-          <p>
-            Painting softwares frequently wipe out color data from transparent
-            pixels, replacing it with a White (255, 255, 255, 0) transparent
-            color.
+            In game engines some texture filtering tecniques cause the textures
+            to create a white/black halo around themselves. This happens because
+            the GPU samples the pixels at the edge with their transparent
+            neighbors to create a smooth transition, when the neighbor pixels
+            are saved as <strong>transparent white</strong> (255, 255, 255, 0)
+            or <strong>transparent black</strong> (0, 0, 0, 0) it creates a
+            strong contrast and results in rendering a faint outline around your
+            sprite.
           </p>
         </div>
 
         <div className="space-y-3">
-          <h3>The Solution: Alpha Bleeding</h3>
+          <h3>The Solution</h3>
           <p>
             This tool performs <strong>texture dilation</strong> by X pixels
-            (padding). It spreads the color of your visible pixels into the
-            adjacent transparent areas while keeping them invisible (Alpha 0).
-            When the GPU samples the edge, it now finds the &quot;bled&quot;
-            color instead of white, resulting in a perfect, clean transition.
+            (padding). It spreads the color of the edge pixels into the adjacent
+            transparent areas while preserving their transparency. When the GPU
+            samples the edge, it now finds the &quot;bled&quot; color instead of
+            white, resulting in a perfect, clean transition.
           </p>
         </div>
       </div>
