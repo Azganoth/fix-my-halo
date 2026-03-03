@@ -1,7 +1,7 @@
 // @ts-check
 import { includeIgnoreFile } from "@eslint/compat";
 import js from "@eslint/js";
-import prettier from "eslint-config-prettier";
+import prettier from "eslint-config-prettier/flat";
 import onlyWarn from "eslint-plugin-only-warn";
 import pluginReact from "eslint-plugin-react";
 import pluginReactHooks from "eslint-plugin-react-hooks";
@@ -37,6 +37,14 @@ export default defineConfig(
       globals: {
         ...globals.serviceworker,
       },
+    },
+  },
+  {
+    rules: {
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { argsIgnorePattern: "^_" },
+      ],
     },
   },
   {
