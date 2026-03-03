@@ -61,6 +61,56 @@ Ideal for modders batch-processing hundreds of textures at once. Supports parall
 ./fixmyhalo "input/" --output "C:/Output/FixedTextures"
 ```
 
+## 🛠 Development
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/)
+- [Rust](https://www.rust-lang.org/)
+- [`wasm-pack`](https://rustwasm.github.io/wasm-pack/installer/) (`cargo install wasm-pack`)
+
+### 🌐 Web Development
+
+To start the development server with Hot Module Replacement (HMR) for both React and Rust (via Wasm):
+
+```bash
+pnpm dev
+```
+
+This runs a watcher that automatically recompiles the Rust core whenever you make changes in `core/`.
+
+### 💻 CLI Development
+
+You can run the CLI directly from the source without building a standalone executable:
+
+```bash
+pnpm test:cli -- ./test-assets/in --output ./test-assets/out --recursive
+```
+
+_Note: Use `--` to separate Cargo arguments from the CLI's own arguments._
+
+### 🧪 Testing
+
+#### Unit Tests (Core Logic)
+
+To test the image processing algorithms in the Rust core:
+
+```bash
+pnpm test:cli-unit
+```
+
+#### Linting & Formatting
+
+```bash
+pnpm lint     # Runs ESLint & TSC
+pnpm format   # Runs Prettier
+```
+
+### 📦 Building for Production
+
+- **Web:** `pnpm build` (Compiles Wasm and builds the Vite app)
+- **CLI:** `pnpm run build:cli` (Compiles the native executable to `dist-cli/`)
+
 ## 📜 License
 
 MIT License. Free to use for personal and commercial projects.

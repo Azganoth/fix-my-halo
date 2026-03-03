@@ -9,6 +9,8 @@ target/
 *.local
 *.tsbuildinfo
 
+test-assets/
+
 # logs
 logs
 *.log

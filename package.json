@@ -10,6 +10,8 @@
     "build:wasm": "wasm-pack build core --target web --out-dir ../src/pkg --no-pack",
     "build:cli": "tsx scripts/build-cli.ts",
     "preview": "pnpm run build:web && vite preview",
+    "test:cli": "cargo run --manifest-path core/Cargo.toml --features cli",
+    "test:cli-unit": "cargo test --manifest-path core/Cargo.toml",
     "lint": "pnpm run \"/lint:./\"",
     "lint:tsc": "tsc -b",
     "lint:eslint": "eslint . --max-warnings 0",
