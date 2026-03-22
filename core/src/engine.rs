@@ -45,8 +45,11 @@ fn dilate_step(img: &RgbaImage, width: u32, height: u32) -> (RgbaImage, bool) {
                 continue;
             }
             if let Some(color) = find_neighbor_color(img, x, y, width, height) {
-                let next = next_img.get_or_insert_with(|| img.clone());
-                next.put_pixel(x, y, color);
+                // Check if the color (ignoring alpha) is different.
+                if pixel[0] != color[0] || pixel[1] != color[1] || pixel[2] != color[2] {
+                    let next = next_img.get_or_insert_with(|| img.clone());
+                    next.put_pixel(x, y, color);
+                }
             }
         }
     }
@@ -152,7 +155,11 @@ mod tests {
         assert!(changed1);
         let buf1 = res1.to_rgba8();
         // The pixel at (2,1) should have red color but 0 alpha
-        assert_eq!(buf1.get_pixel(2, 1), &transparent_red, "1 step should reach (2,1) with hidden color");
+        assert_eq!(
+            buf1.get_pixel(2, 1),
+            &transparent_red,
+            "1 step should reach (2,1) with hidden color"
+        );
         assert_eq!(
             buf1.get_pixel(2, 0).0,
             [0, 0, 0, 0],
@@ -164,6 +171,47 @@ mod tests {
         assert!(changed2);
         let buf2 = res2.to_rgba8();
         // The pixel at (2,0) should have red color but 0 alpha
-        assert_eq!(buf2.get_pixel(2, 0), &transparent_red, "2 steps should reach (2,0) with hidden color");
+        assert_eq!(
+            buf2.get_pixel(2, 0),
+            &transparent_red,
+            "2 steps should reach (2,0) with hidden color"
+        );
+    }
+
+    #[test]
+    fn test_process_image_no_change_already_dilated() {
+        // [ Solid Red, Transparent Red ]
+        // Nothing should change because (1,0) is already red (just transparent).
+        let mut img = RgbaImage::new(2, 1);
+        let red = Rgba([255, 0, 0, 255]);
+        let transparent_red = Rgba([255, 0, 0, 0]);
+
+        img.put_pixel(0, 0, red);
+        img.put_pixel(1, 0, transparent_red);
+
+        let dynamic = DynamicImage::ImageRgba8(img);
+        let (_res, changed) = process_image(dynamic, 1);
+
+        assert!(
+            !changed,
+            "Already dilated image should not be marked as changed"
+        );
+    }
+
+    #[test]
+    fn test_process_image_no_change_solid() {
+        // 2x2 solid red image. No transparent pixels, so no dilation possible.
+        let mut img = RgbaImage::new(2, 2);
+        let red = Rgba([255, 0, 0, 255]);
+        for x in 0..2 {
+            for y in 0..2 {
+                img.put_pixel(x, y, red);
+            }
+        }
+
+        let dynamic = DynamicImage::ImageRgba8(img);
+        let (_res, changed) = process_image(dynamic, 8);
+
+        assert!(!changed, "Solid image should not be marked as changed");
     }
 }
