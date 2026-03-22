@@ -66,7 +66,7 @@ export function FileRow({ item, onRemove, onDownload }: FileRowProps) {
         <span className="truncate font-medium text-foreground">
           {item.file.name}
         </span>
-        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+        <div className="flex items-center gap-3 text-sm text-muted-foreground">
           <AnimatePresence mode="wait">
             {item.status === "processing" && (
               <motion.span
@@ -85,10 +85,14 @@ export function FileRow({ item, onRemove, onDownload }: FileRowProps) {
                 key="done"
                 initial={{ opacity: 0, scale: 0.5 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="flex items-center gap-1 text-green-500"
+                className={`flex items-center gap-1 ${item.changed ? "text-green-500" : "text-muted-foreground"}`}
               >
-                <CheckCircle2Icon className="size-3" />
-                Done
+                {item.changed ? (
+                  <CheckCircle2Icon className="size-3" />
+                ) : (
+                  <CheckCircle2Icon className="size-3 opacity-70" />
+                )}
+                {item.changed ? "Fixed" : "No halo detected"}
               </motion.span>
             )}
             {item.status === "error" && (

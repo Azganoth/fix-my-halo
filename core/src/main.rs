@@ -164,15 +164,22 @@ fn process_job(job: &Job, args: &Cli) -> Result<PathBuf, String> {
         println!("Processing: {:?}", job.input_path);
     }
 
+    let img = image::open(&job.input_path)
+        .map_err(|e| format!("Open error for {:?}: {}", job.input_path, e))?;
+
+    let (processed, changed) = engine::process_image(img, args.padding);
+
+    if !changed && args.in_place {
+        if args.verbose {
+            println!("No changes for {:?}, skipping write.", job.input_path);
+        }
+        return Ok(job.input_path.clone());
+    }
+
     if let Some(parent) = job.output_path.parent() {
         fs::create_dir_all(parent)
             .map_err(|e| format!("Failed to create directory {:?}: {}", parent, e))?;
     }
-
-    let img = image::open(&job.input_path)
-        .map_err(|e| format!("Open error for {:?}: {}", job.input_path, e))?;
-
-    let processed = engine::process_image(img, args.padding);
 
     let file = fs::File::create(&job.output_path)
         .map_err(|e| format!("Failed to create file {:?}: {}", job.output_path, e))?;

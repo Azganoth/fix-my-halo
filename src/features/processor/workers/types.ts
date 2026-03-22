@@ -6,5 +6,5 @@ export interface WorkerData {
 
 export type WorkerMessage =
   | { type: "READY" }
-  | { type: "JOB_DONE"; id: string; resultBytes: Uint8Array }
+  | { type: "JOB_DONE"; id: string; resultBytes: Uint8Array; changed: boolean }
   | { type: "JOB_ERROR"; id: string; error: string };

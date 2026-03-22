@@ -1,14 +1,26 @@
 use image::{DynamicImage, Rgba, RgbaImage};
 
-pub fn process_image(img: DynamicImage, padding: u32) -> DynamicImage {
+pub fn process_image(img: DynamicImage, padding: u32) -> (DynamicImage, bool) {
     let width = img.width();
     let height = img.height();
     let original = img.to_rgba8();
     let mut buffer = original.clone();
+    let mut changed = false;
 
     // We run the dilation 'padding' times
     for _ in 0..padding {
-        buffer = dilate_step(&buffer, width, height);
+        let (next_buffer, step_changed) = dilate_step(&buffer, width, height);
+        if step_changed {
+            buffer = next_buffer;
+            changed = true;
+        } else {
+            // If no pixels were changed in this step, further steps will also change nothing.
+            break;
+        }
+    }
+
+    if !changed {
+        return (img, false);
     }
 
     // Restore original alpha channel to keep the shape,
@@ -18,13 +30,13 @@ pub fn process_image(img: DynamicImage, padding: u32) -> DynamicImage {
         pixel[3] = original_pixel[3];
     }
 
-    DynamicImage::ImageRgba8(buffer)
+    (DynamicImage::ImageRgba8(buffer), true)
 }
 
 /// Expands colored regions into transparent areas to prevent filtering artifacts.
-/// Returns a new image to ensure all pixel updates in this step are based on the previous state.
-fn dilate_step(img: &RgbaImage, width: u32, height: u32) -> RgbaImage {
-    let mut next_img = img.clone();
+/// Returns a new image and a boolean indicating if any pixels were modified.
+fn dilate_step(img: &RgbaImage, width: u32, height: u32) -> (RgbaImage, bool) {
+    let mut next_img: Option<RgbaImage> = None;
 
     for x in 0..width {
         for y in 0..height {
@@ -33,12 +45,16 @@ fn dilate_step(img: &RgbaImage, width: u32, height: u32) -> RgbaImage {
                 continue;
             }
             if let Some(color) = find_neighbor_color(img, x, y, width, height) {
-                next_img.put_pixel(x, y, color);
+                let next = next_img.get_or_insert_with(|| img.clone());
+                next.put_pixel(x, y, color);
             }
         }
     }
 
-    next_img
+    match next_img {
+        Some(ni) => (ni, true),
+        None => (img.clone(), false),
+    }
 }
 
 const OFFSETS: [(i32, i32); 8] = [
@@ -103,7 +119,8 @@ mod tests {
         let red = Rgba([255, 0, 0, 255]);
         img.put_pixel(1, 0, red);
 
-        let next = dilate_step(&img, 3, 3);
+        let (next, changed) = dilate_step(&img, 3, 3);
+        assert!(changed);
 
         // (1,0) remains red
         assert_eq!(next.get_pixel(1, 0), &red);
@@ -131,7 +148,8 @@ mod tests {
         let dynamic = DynamicImage::ImageRgba8(img);
 
         // 1 Step
-        let res1 = process_image(dynamic.clone(), 1);
+        let (res1, changed1) = process_image(dynamic.clone(), 1);
+        assert!(changed1);
         let buf1 = res1.to_rgba8();
         // The pixel at (2,1) should have red color but 0 alpha
         assert_eq!(buf1.get_pixel(2, 1), &transparent_red, "1 step should reach (2,1) with hidden color");
@@ -142,7 +160,8 @@ mod tests {
         );
 
         // 2 Steps
-        let res2 = process_image(dynamic, 2);
+        let (res2, changed2) = process_image(dynamic, 2);
+        assert!(changed2);
         let buf2 = res2.to_rgba8();
         // The pixel at (2,0) should have red color but 0 alpha
         assert_eq!(buf2.get_pixel(2, 0), &transparent_red, "2 steps should reach (2,0) with hidden color");

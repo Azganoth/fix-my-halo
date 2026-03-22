@@ -13,11 +13,18 @@ self.onmessage = async (e: MessageEvent<WorkerData>) => {
   const { id, bytes, padding } = e.data;
 
   try {
-    const resultBytes = fix_texture(bytes, padding);
+    const result = fix_texture(bytes, padding);
+    const resultBytes = result.data;
+    const changed = result.changed;
 
-    postMessage({ type: "JOB_DONE", id, resultBytes } satisfies WorkerMessage, {
-      transfer: [resultBytes.buffer],
-    });
+    postMessage(
+      { type: "JOB_DONE", id, resultBytes, changed } satisfies WorkerMessage,
+      {
+        transfer: [resultBytes.buffer],
+      },
+    );
+
+    result.free();
   } catch (error) {
     postMessage({
       type: "JOB_ERROR",

@@ -10,6 +10,7 @@ export interface FileItem {
   id: string;
   file: File;
   status: FileStatus;
+  changed?: boolean;
 }
 
 interface UseBatchProcessorProps {
@@ -44,13 +45,19 @@ export function useBatchProcessor({ padding }: UseBatchProcessorProps) {
         const arrayBuffer = await pendingItem.file.arrayBuffer();
         const bytes = new Uint8Array(arrayBuffer);
 
-        const resultBytes = await processImage(pendingItem.id, bytes, padding);
+        const { resultBytes, changed } = await processImage(
+          pendingItem.id,
+          bytes,
+          padding,
+        );
 
         processedBlobs.current.set(pendingItem.id, resultBytes);
 
         setFileQueue((prev) =>
           prev.map((item) =>
-            item.id === pendingItem.id ? { ...item, status: "done" } : item,
+            item.id === pendingItem.id
+              ? { ...item, status: "done", changed }
+              : item,
           ),
         );
       } catch (e) {

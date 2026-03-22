@@ -12,12 +12,15 @@ interface WorkerStore {
     id: string,
     bytes: Uint8Array,
     padding: number,
-  ) => Promise<Uint8Array>;
+  ) => Promise<{ resultBytes: Uint8Array; changed: boolean }>;
 }
 
 const pendingJobs = new Map<
   string,
-  { resolve: (data: Uint8Array) => void; reject: (err: string) => void }
+  {
+    resolve: (data: { resultBytes: Uint8Array; changed: boolean }) => void;
+    reject: (err: string) => void;
+  }
 >();
 
 export const useWorkerStore = create<WorkerStore>((set, get) => ({
@@ -43,7 +46,7 @@ export const useWorkerStore = create<WorkerStore>((set, get) => ({
       } else if (msg.type === "JOB_DONE") {
         const job = pendingJobs.get(msg.id);
         if (job) {
-          job.resolve(msg.resultBytes);
+          job.resolve({ resultBytes: msg.resultBytes, changed: msg.changed });
           pendingJobs.delete(msg.id);
         }
       } else if (msg.type === "JOB_ERROR") {
