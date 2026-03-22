@@ -1,6 +1,12 @@
 # dependencies
 node_modules/
 
+# dev
+.vercel
+.env*.local
+
+test-assets/
+
 # build output
 src/pkg/
 dist/
@@ -8,8 +14,6 @@ dist-cli/
 target/
 *.local
 *.tsbuildinfo
-
-test-assets/
 
 # logs
 logs

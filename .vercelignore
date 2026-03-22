@@ -1,0 +1,9 @@
+node_modules
+core/target
+.cargo
+.rustup
+dist
+dist-cli
+src/pkg
+.git
+test-assets
