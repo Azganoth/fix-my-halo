@@ -1,9 +1,11 @@
 use clap::{Parser, ValueHint};
+use console::style;
 use glob::glob;
-use indicatif::{ParallelProgressIterator, ProgressBar, ProgressStyle};
+use indicatif::{HumanDuration, ParallelProgressIterator, ProgressBar, ProgressStyle};
 use rayon::prelude::*;
 use std::fs;
 use std::path::{Path, PathBuf};
+use std::time::Instant;
 use walkdir::WalkDir;
 
 mod engine;
@@ -109,6 +111,7 @@ fn main() {
         })
         .collect();
 
+    /* Process */
     println!("Found {} files to process.", jobs.len());
 
     let pb = ProgressBar::new(jobs.len() as u64);
@@ -121,29 +124,62 @@ fn main() {
             .progress_chars("#>-"),
     );
 
-    /* Process */
-    let results: Vec<Result<PathBuf, String>> = jobs
+    let start_time = Instant::now();
+
+    let results: Vec<Result<(PathBuf, bool), String>> = jobs
         .par_iter()
         .progress_with(pb)
         .map(|job| process_job(job, &args))
         .collect();
 
+    let duration = start_time.elapsed();
+
     /* Report */
-    let success_count = results.iter().filter(|r| r.is_ok()).count();
-    let failure_count = results.len() - success_count;
+    let mut modified_count = 0;
+    let mut skipped_count = 0;
+    let mut failure_count = 0;
 
-    println!("\nSummary:");
-    println!("  Success: {}", success_count);
-    println!("  Failed:  {}", failure_count);
-
-    if failure_count > 0 && args.verbose {
-        println!("\nFailures:");
-        for res in results {
-            if let Err(e) = res {
-                eprintln!("  - {}", e);
+    for res in &results {
+        match res {
+            Ok((_, changed)) => {
+                if *changed {
+                    modified_count += 1;
+                } else {
+                    skipped_count += 1;
+                }
+            }
+            Err(_) => {
+                failure_count += 1;
             }
         }
     }
+
+    println!("\n{}", style("Summary:").bold());
+    println!("  Total:     {}", jobs.len());
+    println!("  Modified:  {}", style(modified_count).green());
+    println!("  Skipped:   {}", style(skipped_count).dim());
+    if failure_count > 0 {
+        println!("  Failed:    {}", style(failure_count).red());
+    }
+
+    if failure_count > 0 {
+        if args.verbose {
+            println!("\n{}", style("Failures:").bold());
+            for res in results {
+                if let Err(e) = res {
+                    eprintln!("  - {}", style(e).red());
+                }
+            }
+        } else {
+            println!("\n(Use {} to see failure details)", style("--verbose").bold());
+        }
+    }
+
+    println!(
+        "\n{} Finished in {}",
+        style("Done!").green().bold(),
+        HumanDuration(duration)
+    );
 }
 
 fn is_image(path: &Path) -> bool {
@@ -159,7 +195,7 @@ fn is_image(path: &Path) -> bool {
         .unwrap_or(false)
 }
 
-fn process_job(job: &Job, args: &Cli) -> Result<PathBuf, String> {
+fn process_job(job: &Job, args: &Cli) -> Result<(PathBuf, bool), String> {
     if args.verbose {
         println!("Processing: {:?}", job.input_path);
     }
@@ -173,7 +209,7 @@ fn process_job(job: &Job, args: &Cli) -> Result<PathBuf, String> {
         if args.verbose {
             println!("No changes for {:?}, skipping write.", job.input_path);
         }
-        return Ok(job.input_path.clone());
+        return Ok((job.input_path.clone(), false));
     }
 
     if let Some(parent) = job.output_path.parent() {
@@ -195,5 +231,5 @@ fn process_job(job: &Job, args: &Cli) -> Result<PathBuf, String> {
         .write_with_encoder(encoder)
         .map_err(|e| format!("Save error for {:?}: {}", job.output_path, e))?;
 
-    Ok(job.output_path.clone())
+    Ok((job.output_path.clone(), changed))
 }
