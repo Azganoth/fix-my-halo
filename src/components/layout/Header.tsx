@@ -10,7 +10,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
       <div className="container mx-auto flex h-14 items-center justify-between px-4">
-        <span className="text-2xl">😇</span>
+        <img src="/favicon-192x.png" alt="" width={48} />
 
         <div className="flex items-center gap-2">
           <Button
@@ -26,19 +26,19 @@ export function Header() {
             className="hidden cursor-pointer gap-2 md:flex"
             variant="ghost"
             size="sm"
-            onClick={() => scrollTo("how-it-works")}
+            onClick={() => scrollTo("cli-docs")}
           >
-            <InfoIcon className="size-4" />
-            How it works
+            <TerminalIcon className="size-4" />
+            CLI
           </Button>
           <Button
             className="hidden cursor-pointer gap-2 md:flex"
             variant="ghost"
             size="sm"
-            onClick={() => scrollTo("cli-docs")}
+            onClick={() => scrollTo("how-it-works")}
           >
-            <TerminalIcon className="size-4" />
-            CLI Docs
+            <InfoIcon className="size-4" />
+            How it works
           </Button>
 
           <ThemeToggle />
