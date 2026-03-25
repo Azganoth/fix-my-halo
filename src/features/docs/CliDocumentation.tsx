@@ -8,10 +8,11 @@ export function CliDocumentation() {
       <div className="space-y-2 text-center md:text-left">
         <div className="flex items-center justify-center gap-2 md:justify-start">
           <TerminalIcon className="size-6 text-primary" />
-          <h2 className="text-2xl font-bold">CLI Reference</h2>
+          <h2 className="text-2xl font-bold">CLI</h2>
         </div>
-        <p className="text-muted-foreground">
-          Automate your asset pipeline with the native command-line tool.
+        <p className="text-lg text-muted-foreground">
+          Automate the texture fixing pipeline with the native command-line
+          tool.
         </p>
       </div>
 
@@ -19,16 +20,16 @@ export function CliDocumentation() {
         <CliCommandBuilder />
 
         <div className="space-y-4">
-          <h3 className="flex items-center gap-2 text-lg font-semibold">
+          <h3 className="flex items-center gap-2 text-xl font-semibold">
             <DownloadIcon className="size-4" />
             Installation
           </h3>
           <div className="space-y-6 rounded-lg border bg-card p-6 shadow-sm">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground">
               Download the latest standalone executable for Windows (x64) from
-              the releases page. No dependencies required.
+              the releases page.
             </p>
-            <Button className="w-full" asChild>
+            <Button className="w-full text-lg" size="lg" asChild>
               <a
                 href="https://github.com/Azganoth/fix-my-halo/releases"
                 target="_blank"

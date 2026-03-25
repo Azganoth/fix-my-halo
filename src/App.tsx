@@ -66,23 +66,23 @@ export function App() {
             <h1 className="text-4xl font-extrabold lg:text-6xl">
               Fix My <span className="text-primary">Halo</span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg text-muted-foreground">
+            <p className="mt-6 max-w-xl text-xl text-muted-foreground">
               Automatically eliminate white artifacts from your textures using
               pixel dilation. Runs 100% locally in your browser.
             </p>
           </motion.div>
 
-          <motion.div {...revealAnimation} className="my-auto w-full">
+          <motion.div {...revealAnimation} className="w-full">
             <BatchProcessor />
           </motion.div>
         </section>
 
-        <motion.div {...revealAnimation}>
-          <ProcessExplanation />
-        </motion.div>
-
         <motion.div {...revealAnimation} className="w-full max-w-3xl">
           <CliDocumentation />
+        </motion.div>
+
+        <motion.div {...revealAnimation}>
+          <ProcessExplanation />
         </motion.div>
       </main>
 

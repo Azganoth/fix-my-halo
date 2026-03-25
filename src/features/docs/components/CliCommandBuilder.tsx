@@ -54,7 +54,7 @@ export function CliCommandBuilder() {
         {/* Core Params */}
         <div className="space-y-8">
           <div className="space-y-3">
-            <Label className="text-muted-foreground">Input Source</Label>
+            <Label className="text-muted-foreground">Input</Label>
             <div className="relative">
               <FolderOpenIcon className="absolute top-2.5 left-3 size-4 text-muted-foreground" />
               <Input
@@ -64,18 +64,18 @@ export function CliCommandBuilder() {
                 placeholder="Path to file or folder..."
               />
             </div>
-            <p className="text-xs text-muted-foreground">
-              Tip: You can also use glob patterns like{" "}
-              <span className="font-mono text-foreground">**/*.png</span>
+            <p className="text-sm text-muted-foreground">
+              You can also use glob patterns like{" "}
+              <span className="font-mono text-foreground">**/*.png</span>.
             </p>
           </div>
 
           <div className="space-y-4 rounded-lg border p-4">
             <div className="flex items-center justify-between">
               <div>
-                <Label htmlFor="recursive">Recursive Search</Label>
+                <Label htmlFor="recursive">Recursive</Label>
                 <span className="text-xs font-normal text-muted-foreground">
-                  Process subfolders deep inside
+                  Process subfolders.
                 </span>
               </div>
               <Switch
@@ -86,9 +86,9 @@ export function CliCommandBuilder() {
             </div>
             <div className="flex items-center justify-between">
               <div>
-                <Label htmlFor="in-place">Overwrite Originals</Label>
+                <Label htmlFor="in-place">Overwrite</Label>
                 <span className="text-xs font-normal text-muted-foreground">
-                  Don&apos;t create a copy (Destructive)
+                  Replace original textures.
                 </span>
               </div>
               <Switch
@@ -105,7 +105,7 @@ export function CliCommandBuilder() {
 
         {/* Advanced Options */}
         <div className="space-y-8">
-          <div className="space-y-3">
+          <div className="space-y-6">
             <div className="flex items-center justify-between">
               <Label htmlFor="cli-dilation" className="text-muted-foreground">
                 Dilation Padding

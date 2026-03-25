@@ -105,13 +105,14 @@ export function BatchProcessor() {
               <ImagePlusIcon className="h-10 w-10 text-muted-foreground" />
             </motion.div>
             <div>
-              <h3 className="text-xl font-bold">Drop textures here</h3>
-              <p className="mt-2 max-w-xs text-sm text-muted-foreground">
-                Support for PNG, JPG, TGA, BMP, TIFF and DDS. Drag & drop
-                multiple files or click to browse.
+              <h3 className="text-2xl font-bold">Drop textures here</h3>
+              <p className="mt-2 text-lg text-muted-foreground">
+                Or click to select them
+              </p>
+              <p className="mt-4 text-muted-foreground">
+                Supports PNG, JPG, TGA, BMP, TIFF and DDS.
               </p>
             </div>
-            <Button variant="outline">Select Files</Button>
           </motion.div>
         )}
 
