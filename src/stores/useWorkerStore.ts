@@ -1,7 +1,7 @@
 import type {
   WorkerData,
   WorkerMessage,
-} from "@/features/processor/workers/types";
+} from "#/features/processor/workers/types";
 import { create } from "zustand";
 
 interface WorkerStore {
@@ -32,7 +32,7 @@ export const useWorkerStore = create<WorkerStore>((set, get) => ({
 
     const worker = new Worker(
       new URL(
-        "@/features/processor/workers/processorWorker.ts",
+        "#/features/processor/workers/processorWorker.ts",
         import.meta.url,
       ),
       { type: "module" },

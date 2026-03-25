@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/Button";
-import { ThemeToggle } from "@/features/theme/ThemeToggle";
+import { Button } from "#/components/ui/Button";
+import { ThemeToggle } from "#/features/theme/ThemeToggle";
 import { InfoIcon, PlayIcon, TerminalIcon } from "lucide-react";
 
 export function Header() {

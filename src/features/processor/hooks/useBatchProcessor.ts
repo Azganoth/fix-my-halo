@@ -1,5 +1,5 @@
-import { SUPPORTED_FILE_TYPES } from "@/lib/constants";
-import { useWorkerStore } from "@/stores/useWorkerStore";
+import { SUPPORTED_FILE_TYPES } from "#/lib/constants";
+import { useWorkerStore } from "#/stores/useWorkerStore";
 import JSZip from "jszip";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { download } from "../utils";

@@ -1,11 +1,11 @@
-import { Button } from "@/components/ui/Button";
-import { Label } from "@/components/ui/Label";
-import { ScrollArea } from "@/components/ui/ScrollArea";
-import { Slider } from "@/components/ui/Slider";
-import { FileRow } from "@/features/processor/components/FileRow";
-import { SUPPORTED_FILE_TYPES } from "@/lib/constants";
-import { cn } from "@/lib/utils";
-import { useSettingsStore } from "@/stores/useSettingsStore";
+import { Button } from "#/components/ui/Button";
+import { Label } from "#/components/ui/Label";
+import { ScrollArea } from "#/components/ui/ScrollArea";
+import { Slider } from "#/components/ui/Slider";
+import { FileRow } from "#/features/processor/components/FileRow";
+import { SUPPORTED_FILE_TYPES } from "#/lib/constants";
+import { cn } from "#/lib/utils";
+import { useSettingsStore } from "#/stores/useSettingsStore";
 import {
   DownloadIcon,
   ImagePlusIcon,

@@ -1,14 +1,12 @@
-import "@/App.css";
-import { Footer } from "@/components/layout/Footer";
-import { Header } from "@/components/layout/Header";
-import { CliDocumentation } from "@/features/docs/CliDocumentation";
-import { ProcessExplanation } from "@/features/docs/ProcessExplanation";
-import { BatchProcessor } from "@/features/processor/BatchProcessor";
-import { useThemeStore } from "@/stores/useThemeStore";
-import { useWorkerStore } from "@/stores/useWorkerStore";
-// @ts-expect-error fontsource font
+import "#/App.css";
+import { Footer } from "#/components/layout/Footer";
+import { Header } from "#/components/layout/Header";
+import { CliDocumentation } from "#/features/docs/CliDocumentation";
+import { ProcessExplanation } from "#/features/docs/ProcessExplanation";
+import { BatchProcessor } from "#/features/processor/BatchProcessor";
+import { useThemeStore } from "#/stores/useThemeStore";
+import { useWorkerStore } from "#/stores/useWorkerStore";
 import "@fontsource-variable/inter";
-// @ts-expect-error fontsource font
 import "@fontsource-variable/jetbrains-mono";
 import { Loader2Icon } from "lucide-react";
 import { motion, type MotionProps, type Variants } from "motion/react";

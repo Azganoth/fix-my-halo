@@ -1,4 +1,4 @@
-import { DEFAULT_PADDING } from "@/lib/constants";
+import { DEFAULT_PADDING } from "#/lib/constants";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 

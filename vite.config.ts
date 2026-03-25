@@ -1,31 +1,28 @@
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
-import path from "node:path";
 import { defineConfig } from "vite";
 import wasm from "vite-plugin-wasm";
 
 export default defineConfig(() => ({
   // @ts-expect-error vite-plugin-wasm type mismatch
   plugins: [react(), tailwindcss(), wasm()],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
-  },
   build: {
-    rollupOptions: {
+    rolldownOptions: {
       output: {
-        manualChunks: {
-          "react-vendor": ["react", "react-dom"],
-          "ui-vendor": ["lucide-react", "motion"],
-          "radix-vendor": [
-            "@radix-ui/react-hover-card",
-            "@radix-ui/react-label",
-            "@radix-ui/react-scroll-area",
-            "@radix-ui/react-separator",
-            "@radix-ui/react-slider",
-            "@radix-ui/react-slot",
-            "@radix-ui/react-switch",
+        codeSplitting: {
+          groups: [
+            {
+              name: "react-vendor",
+              test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+            },
+            {
+              name: "ui-vendor",
+              test: /[\\/]node_modules[\\/](lucide-react|motion)[\\/]/,
+            },
+            {
+              name: "radix-vendor",
+              test: /[\\/]node_modules[\\/]@radix-ui[\\/]/,
+            },
           ],
         },
       },

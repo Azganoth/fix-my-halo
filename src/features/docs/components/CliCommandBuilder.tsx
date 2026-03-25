@@ -1,10 +1,10 @@
-import { CodeSnippet } from "@/components/ui/CodeSnippet";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/Label";
-import { Slider } from "@/components/ui/Slider";
-import { Switch } from "@/components/ui/Switch";
-import { DEFAULT_PADDING } from "@/lib/constants";
-import { cn } from "@/lib/utils";
+import { CodeSnippet } from "#/components/ui/CodeSnippet";
+import { Input } from "#/components/ui/Input";
+import { Label } from "#/components/ui/Label";
+import { Slider } from "#/components/ui/Slider";
+import { Switch } from "#/components/ui/Switch";
+import { DEFAULT_PADDING } from "#/lib/constants";
+import { cn } from "#/lib/utils";
 import { FolderInputIcon, FolderOpenIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 

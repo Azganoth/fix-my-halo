@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/Button";
+import { Button } from "#/components/ui/Button";
 import { CheckIcon, CopyIcon } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";

@@ -1,11 +1,11 @@
-import { Button } from "@/components/ui/Button";
+import { Button } from "#/components/ui/Button";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@/components/ui/HoverCard";
-import type { FileItem } from "@/features/processor/hooks/useBatchProcessor";
-import { useFilePreview } from "@/features/processor/hooks/useFilePreview";
+} from "#/components/ui/HoverCard";
+import type { FileItem } from "#/features/processor/hooks/useBatchProcessor";
+import { useFilePreview } from "#/features/processor/hooks/useFilePreview";
 import {
   CheckCircle2Icon,
   DownloadIcon,
