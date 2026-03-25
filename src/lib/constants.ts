@@ -1,4 +1,4 @@
-export const DEFAULT_PADDING = 8;
+export const DEFAULT_PADDING = 4;
 
 export const SUPPORTED_FILE_TYPES = [
   "image/png",

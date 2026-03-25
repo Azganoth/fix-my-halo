@@ -23,7 +23,7 @@ struct Cli {
     output: Option<PathBuf>,
 
     /// Dilation padding in pixels.
-    #[arg(short, long, default_value_t = 8)]
+    #[arg(short, long, default_value_t = 4)]
     padding: u32,
 
     /// Process directories recursively.

@@ -210,7 +210,7 @@ mod tests {
         }
 
         let dynamic = DynamicImage::ImageRgba8(img);
-        let (_res, changed) = process_image(dynamic, 8);
+        let (_res, changed) = process_image(dynamic, 4);
 
         assert!(!changed, "Solid image should not be marked as changed");
     }
