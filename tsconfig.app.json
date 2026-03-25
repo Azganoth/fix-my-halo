@@ -1,10 +1,9 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "lib": ["ESNext", "DOM"],
     "module": "ESNext",
     "skipLibCheck": true,
-    "useDefineForClassFields": true,
 
     /* Bundlers */
     "moduleResolution": "bundler",
@@ -20,13 +19,13 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
 
     /* Imports */
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "#/*": ["./src/*"]
+    },
+
+    "types": ["node"]
   },
   "include": ["src"]
 }
