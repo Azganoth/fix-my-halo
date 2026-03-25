@@ -12,4 +12,23 @@ export default defineConfig(() => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          "react-vendor": ["react", "react-dom"],
+          "ui-vendor": ["lucide-react", "motion"],
+          "radix-vendor": [
+            "@radix-ui/react-hover-card",
+            "@radix-ui/react-label",
+            "@radix-ui/react-scroll-area",
+            "@radix-ui/react-separator",
+            "@radix-ui/react-slider",
+            "@radix-ui/react-slot",
+            "@radix-ui/react-switch",
+          ],
+        },
+      },
+    },
+  },
 }));
